@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (PHP 8.5)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: app
+          POSTGRES_DB: resale_marketplace
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U app -d resale_marketplace"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: pgsql, pdo_pgsql, intl, zip, mbstring, sodium, apcu
+          coverage: none
+
+      - name: Créer .env (défauts de dev + base de données de CI)
+        run: |
+          cp .env.example .env
+          sed -i 's|@database:5432|@127.0.0.1:5432|' .env
+
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: Installer les dépendances Composer
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Migrer la base de test
+        run: APP_ENV=test php bin/console doctrine:migrations:migrate --no-interaction
+
+      - name: PHPUnit
+        run: php vendor/bin/phpunit
+
+      - name: PHPStan (niveau 6)
+        run: vendor/bin/phpstan analyse --memory-limit=1G --no-progress
+
+      - name: PHPCS (PSR-12)
+        run: vendor/bin/phpcs
+
+  frontend:
+    name: Frontend (Node 22)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Installer les dépendances npm
+        run: npm ci
+
+      - name: Build (tsc + Vite)
+        run: npm run build
+
+      - name: Tests (Vitest)
+        run: npm test
+
+      - name: Lint (oxlint)
+        run: npm run lint

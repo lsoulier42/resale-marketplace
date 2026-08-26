@@ -1,5 +1,8 @@
 # Resale Marketplace — Symfony 8.1 (API JSON) + React 19 (SPA)
 
+[![CI](https://github.com/lsoulier42/resale-marketplace/actions/workflows/ci.yml/badge.svg)](https://github.com/lsoulier42/resale-marketplace/actions/workflows/ci.yml)
+[![Licence: MIT](https://img.shields.io/badge/Licence-MIT-yellow.svg)](LICENSE)
+
 Marketplace de revente entre particuliers : **Symfony 8.1 / PHP 8.5 en API JSON** (`/api/*`) + **SPA React** (card-based, glassmorphism rose/mauve) servie par nginx. Frontend dans `frontend/` (Vite + TypeScript).
 
 ## Stack technique
@@ -85,6 +88,8 @@ make frontend-test                      # Frontend : Vitest (frontend/src/**/*.t
 make frontend-lint                      # oxlint
 ```
 
+La **CI (GitHub Actions)** exécute ces contrôles à chaque push sur `main` et sur chaque pull request (`.github/workflows/ci.yml`).
+
 ## Architecture
 
 - **API JSON** : `src/Controller/Api/*` — auth (json_login + CSRF header), vitrine publique, espace acheteur·se (commandes, adresses, profil, avis), vendeur·se (articles, médias, onboarding Stripe), webhooks Stripe, admin (users, customers), inscription publique.
@@ -110,3 +115,26 @@ Les variables sont définies dans `.env`. Les principales :
 | `APP_BASE_URL` | `http://localhost:8081` |
 
 Pour le paiement en production : renseigner `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET`, pointer `APP_BASE_URL` vers le domaine réel et enregistrer le webhook Stripe vers `https://<domaine>/api/webhooks/stripe`.
+
+## Contribuer
+
+Les contributions sont les bienvenues !
+
+1. **Fork** le dépôt et créez une branche dédiée (`git checkout -b feature/ma-fonctionnalite`).
+2. **Conventions** : PHP PSR-12 (vérifié par PHPCS), PHPStan niveau 6, TypeScript strict côté frontend, commentaires et interface en français.
+3. **Tests** : chaque changement doit passer la suite complète :
+
+   ```bash
+   php vendor/bin/phpunit
+   vendor/bin/phpstan analyse --memory-limit=1G
+   vendor/bin/phpcs
+   cd frontend && npm run build && npm test && npm run lint
+   ```
+
+4. Ouvrez une **pull request** vers `main` avec une description claire (problème, solution, tests effectués).
+
+Les bugs et demandes de fonctionnalités se signalent via les [issues](https://github.com/lsoulier42/resale-marketplace/issues). Pour les changements notables, ajoutez une entrée dans le [CHANGELOG](CHANGELOG.md).
+
+## Licence
+
+MIT — voir [LICENSE](LICENSE).
