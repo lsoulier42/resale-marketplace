@@ -1,0 +1,7 @@
+framework:
+    mailer:
+        # En test : aucun envoi réel ni file Messenger ; les emails sont
+        # envoyés de façon synchrone sur le transport null et collectés en
+        # mémoire pour les assertions (MailerAssertionsTrait).
+        dsn: 'null://null'
+        message_bus: false

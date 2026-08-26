@@ -1,0 +1,65 @@
+/public/build/fonts/glyphicons-*
+/public/build/images/glyphicons-*
+
+.php-version
+.composer
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/build/
+/public/bundles/
+/var/*
+!/var/.gitkeep
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+.idea
+/docker/db/postgresql/
+!/docker/db/.gitkeep
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+###< squizlabs/php_codesniffer ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
+CLAUDE.md
+
+###> phpunit ###
+/.phpunit.cache/
+###< phpunit ###
+
+###> outils desktop ###
+/.freebuff/
+###< outils desktop ###
+
+###> uploads demo ###
+/public/uploads/
+###< uploads demo ###
+
+###> frontend react ###
+/frontend/node_modules/
+/frontend/dist/
+###< frontend react ###
+
+# --- Ajout pour publication publique ---
+.env
+.env.*
+!.env.example
+*.sql
+import_*.json
+.ovhconfig
+/var/
+/backend/var/
+/backend/public/app/

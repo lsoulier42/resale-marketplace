@@ -1,0 +1,10 @@
+# Protection CSRF classique (tokens en session, rendus côté serveur).
+# Le mode stateless nécessiterait le contrôleur Stimulus csrf-protection,
+# non installé dans ce projet.
+framework:
+    form:
+        csrf_protection:
+            token_id: submit
+
+    csrf_protection:
+        enabled: true

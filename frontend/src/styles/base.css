@@ -1,0 +1,109 @@
+/* ============================================================
+   Resale Marketplace — Base : reset, fond dégradé, halos, typographie
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--gradient-soft);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.55;
+}
+
+/* Halos flous rose / mauve en arrière-plan */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+body::before {
+  width: 480px;
+  height: 480px;
+  top: -140px;
+  right: -120px;
+  background: radial-gradient(circle, var(--rose-300), transparent 70%);
+}
+
+body::after {
+  width: 560px;
+  height: 560px;
+  bottom: -180px;
+  left: -160px;
+  background: radial-gradient(circle, var(--mauve-300), transparent 70%);
+}
+
+/*
+ * Liens : couleurs globales en `:where()` (spécificité zéro) pour que les
+ * composants (boutons, cartes, pill-links) gardent leurs propres couleurs,
+ * y compris au survol — évite le texte orange des `a:hover` sur les
+ * boutons `.btn-primary` (dégradé rose→mauve).
+ */
+:where(a) {
+  color: var(--mauve-600);
+  text-decoration: none;
+}
+
+:where(a):hover {
+  color: var(--rose-600);
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 700;
+  text-shadow: var(--text-shadow-glass);
+  color: var(--ink);
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Accessibilité : focus visible cohérent sur tous les éléments interactifs */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--mauve-400);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Accessibilité : désactive les animations si l'utilisateur le demande */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+::selection {
+  background: var(--rose-200);
+  color: var(--ink);
+}

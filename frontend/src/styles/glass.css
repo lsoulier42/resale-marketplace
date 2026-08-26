@@ -1,0 +1,193 @@
+/* ============================================================
+   Resale Marketplace — Verre : cartes, panneaux, boutons, badges
+   ============================================================ */
+
+/* Carte en verre */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.glass-card--hover:hover {
+  background: var(--glass-bg-hover);
+  box-shadow: var(--glass-shadow-hover);
+  transform: translateY(-3px);
+}
+
+.glass-panel {
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+/* Fallback navigateurs sans backdrop-filter */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-card,
+  .glass-panel {
+    background: var(--glass-bg-strong);
+  }
+}
+
+/* Boutons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.62rem 1.25rem;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--gradient-brand);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(236, 72, 153, 0.35);
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 10px 26px rgba(236, 72, 153, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--ink);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.btn-glass:hover:not(:disabled) {
+  background: var(--glass-bg-hover);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-muted);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #fb7185, #f43f5e);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(244, 63, 94, 0.3);
+}
+
+.btn-sm {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+}
+
+/* Badges pastel */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.badge-pink {
+  background: var(--rose-100);
+  color: var(--rose-600);
+  border-color: var(--rose-200);
+}
+
+.badge-mauve {
+  background: var(--mauve-100);
+  color: var(--mauve-600);
+  border-color: var(--mauve-200);
+}
+
+.badge-muted {
+  background: rgba(124, 111, 147, 0.14);
+  color: var(--ink-muted);
+  border-color: rgba(124, 111, 147, 0.25);
+}
+
+.badge-green {
+  background: #dcfce7;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+.badge-amber {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: #fde68a;
+}
+
+.badge-red {
+  background: #ffe4e6;
+  color: #be123c;
+  border-color: #fecdd3;
+}
+
+/* Liens en pilule (sidebar, navigation) */
+.pill-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.62rem 0.9rem;
+  border-radius: var(--radius-pill);
+  color: var(--ink-muted);
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+/* Survol : teinte mauve pastel (pas de blanc) + texte encre, lisible. */
+.pill-link:hover {
+  background: rgba(221, 214, 254, 0.55);
+  color: var(--ink);
+}
+
+/*
+ * Item actif : le dégradé rose→mauve et le texte blanc sont conservés au
+ * survol — ces règles (0,2,0) sont déclarées après `.pill-link:hover`
+ * (0,2,0) pour gagner à spécificité égale (ordre de source).
+ */
+.pill-link--active,
+.pill-link--active:hover {
+  background: var(--gradient-pill);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(167, 139, 250, 0.4);
+}

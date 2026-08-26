@@ -1,0 +1,31 @@
+parameters:
+    locale: fr
+    app_env: '%env(APP_ENV)%'
+    app_version: '%env(APP_VERSION)%'
+    upload_directory: '%kernel.project_dir%/public/uploads'
+    # Commission de la plateforme (%), utilisée par défaut si
+    # PLATFORM_FEE_PERCENT n'est pas défini.
+    platform_fee_percent: 5
+
+when@test:
+    parameters:
+        # Les uploads de test ne touchent pas public/uploads.
+        upload_directory: '%kernel.cache_dir%/uploads'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Service\StripeService:
+        arguments:
+            $stripeSecretKey: '%env(STRIPE_SECRET_KEY)%'
+            $stripeWebhookSecret: '%env(STRIPE_WEBHOOK_SECRET)%'
+            $appBaseUrl: '%env(APP_BASE_URL)%'
+            $platformFeePercent: '%env(default:platform_fee_percent:PLATFORM_FEE_PERCENT)%'
