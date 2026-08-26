@@ -26,7 +26,7 @@ All visual decisions are centralized in design tokens (`frontend/src/styles/toke
 
 ![Item detail](docs/screenshots/item-detail.png)
 
-![Seller page](docs/screenshots/seller-detail.png)
+![Stripe payments](docs/screenshots/payments.png)
 
 ## Features
 
