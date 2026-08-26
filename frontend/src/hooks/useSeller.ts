@@ -13,6 +13,14 @@ export function useStripeOnboarding() {
   });
 }
 
+export function useStripeRefresh() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: stripeApi.refresh,
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: ['stripe-status'] }),
+  });
+}
+
 export function useMedias() {
   return useQuery({ queryKey: ['medias'], queryFn: sellerApi.medias });
 }

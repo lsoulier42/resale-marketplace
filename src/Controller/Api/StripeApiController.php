@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Seller;
 use App\Entity\User;
 use App\Repository\SellerRepository;
 use App\Service\StripeService;
@@ -14,7 +15,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 /**
  * Espace de paiement du vendeur·se (Stripe Connect).
  *
- * - GET  /api/me/stripe     → état du compte Connect
+ * - GET  /api/me/stripe          → état du compte Connect
+ * - POST /api/me/stripe/refresh   → resynchronisation live depuis Stripe
  * - POST /api/me/stripe/onboarding → URL d'onboarding (Account Link)
  */
 #[IsGranted('ROLE_USER')]
@@ -32,14 +34,53 @@ class StripeApiController extends ApiController
     ): JsonResponse {
         $seller = $sellerRepository->findByUser($user);
 
+        return $this->jsonResponse($this->stripeStatus($seller));
+    }
+
+    /**
+     * Resynchronise l'état du compte Connect depuis Stripe (appel live) puis
+     * retourne le statut. Utilisé au retour de l'onboarding hébergé pour ne pas
+     * dépendre du webhook account.updated.
+     */
+    #[Route(path: '/refresh', name: 'api_me_stripe_refresh', methods: ['POST'])]
+    public function refresh(
+        SellerRepository $sellerRepository,
+        #[CurrentUser] User $user
+    ): JsonResponse {
+        $seller = $sellerRepository->findByUser($user);
+        if ($seller === null) {
+            return $this->jsonError(
+                'Vous devez être vendeur·se pour configurer vos paiements.',
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        $ready = $this->stripeService->syncAccountStatus($seller);
+        if ($seller->getStripeAccountId() !== null) {
+            $sellerRepository->createOrUpdate($seller);
+        }
+
         return $this->jsonResponse([
+            'stripe' => [
+                'isSeller' => true,
+                'onboarded' => $seller->getStripeAccountId() !== null,
+                'ready' => $ready,
+                'configured' => $this->stripeService->isConfigured(),
+            ],
+        ]);
+    }
+
+    /** @return array{stripe: array{isSeller: bool, onboarded: bool, ready: bool, configured: bool}} */
+    private function stripeStatus(?Seller $seller): array
+    {
+        return [
             'stripe' => [
                 'isSeller' => $seller !== null,
                 'onboarded' => $seller?->getStripeAccountId() !== null,
                 'ready' => $seller?->isStripeAccountReady() ?? false,
                 'configured' => $this->stripeService->isConfigured(),
             ],
-        ]);
+        ];
     }
 
     #[Route(path: '/onboarding', name: 'api_me_stripe_onboarding', methods: ['POST'])]

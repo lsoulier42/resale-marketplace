@@ -34,7 +34,7 @@ All visual decisions are centralized in design tokens (`frontend/src/styles/toke
 - **Public catalog** — items with photos, categories, seller pages, reviews, pagination and filtering.
 - **Buyer space** — place orders, shipping addresses, order tracking (statuses), reviews after delivery.
 - **Seller space** — publish and manage items, upload media, update order statuses (shipping, tracking).
-- **Payments (Stripe Connect)** — seller KYC onboarding (Account Link), hosted Checkout Session with platform fee split, webhooks (`checkout.session.completed` → paid, `account.updated`, `charge.refunded`). Can be disabled in development by leaving `STRIPE_SECRET_KEY` empty.
+- **Payments (Stripe Connect)** — seller KYC onboarding (Account Link v2, Accounts v2 recipient accounts), hosted Checkout Session with platform fee split, webhooks (`checkout.session.completed` → paid, `account.updated`, `charge.refunded`). Can be disabled in development by leaving `STRIPE_SECRET_KEY` empty.
 - **Administration** — manage users and customer accounts.
 - **Demo fixtures** — 6 categories, sellers, buyers, items and reviews (all demo accounts share the `demo1234` password).
 
@@ -127,7 +127,7 @@ The **CI (GitHub Actions)** runs these checks on every push to `main` and on eve
 
 - **JSON API**: `src/Controller/Api/*` — auth (json_login + CSRF header), public catalog, buyer space (orders, addresses, profile, reviews), seller space (items, media, Stripe onboarding), Stripe webhooks, admin (users, customers), public registration.
 - **Payloads**: explicit mapping through `src/Service/CatalogPresenter` and `src/Service/OrderPresenter` (no reflective serialization — no `password`/Stripe account leaks in public reads).
-- **Payments (Stripe Connect)**: one standard Connect account per seller (KYC onboarding via Account Link), hosted Checkout Session with platform fee (`application_fee_amount`), webhooks (`checkout.session.completed` → paid, `account.updated`, `charge.refunded`). Inactive while `STRIPE_SECRET_KEY` is empty (development).
+- **Payments (Stripe Connect)**: one Connect account per seller created via the Accounts v2 API (recipient configuration — the platform is the merchant and transfers to sellers), KYC onboarding via hosted Account Link v2, Checkout Session with platform fee (`application_fee_amount`), webhooks (`checkout.session.completed` → paid, `account.updated`, `charge.refunded`). Inactive while `STRIPE_SECRET_KEY` is empty (development).
 - **Business rules**: single-purchase (OneToOne Item↔Order), `availableCount` decremented on order, status transitions via `OrderStatus::allowedTransitions()`.
 - **React SPA**: `frontend/src/` — `api/` (fetch client + CSRF + endpoints), `auth/` (AuthProvider, guards), `hooks/` (TanStack Query), `components/` (layout + UI kit + domain), `pages/` (catalog, buyer, seller, admin), `styles/` (design tokens + neutral marketplace styles).
 

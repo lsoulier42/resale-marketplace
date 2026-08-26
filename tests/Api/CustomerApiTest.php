@@ -96,6 +96,26 @@ class CustomerApiTest extends ApiTestCase
         $this->jsonMutation('POST', '/api/me/stripe/onboarding', null, 503);
     }
 
+    public function testStripeRefreshRequiresSeller(): void
+    {
+        $this->login('camille@example.test');
+
+        $this->jsonMutation('POST', '/api/me/stripe/refresh', null, 422);
+    }
+
+    public function testStripeRefreshReturnsStatusForSellerWithoutAccount(): void
+    {
+        $this->login('jordan@example.test');
+
+        // Sans compte Connect ni clé Stripe, le refresh reste inerte et cohérent.
+        $data = $this->jsonMutation('POST', '/api/me/stripe/refresh');
+
+        self::assertTrue($data['stripe']['isSeller']);
+        self::assertFalse($data['stripe']['onboarded']);
+        self::assertFalse($data['stripe']['ready']);
+        self::assertFalse($data['stripe']['configured']);
+    }
+
     public function testSellerFollowsStatusTransitions(): void
     {
         $available = $this->availableItemWithSeller();

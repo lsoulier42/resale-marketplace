@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { CreditCard, Store, UserCircle } from 'lucide-react';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
@@ -7,21 +8,49 @@ import { Skeleton } from '../components/ui/Skeleton';
 import { useToast } from '../components/ui/useToast';
 import { useProfile, useUpdateProfile } from '../hooks/useCustomer';
 import { useBecomeSeller } from '../hooks/useRegistration';
-import { useStripeOnboarding, useStripeStatus } from '../hooks/useSeller';
+import { useStripeOnboarding, useStripeRefresh, useStripeStatus } from '../hooks/useSeller';
 import { useAuth } from '../auth/useAuth';
 import type { ProfileData } from '../api/types';
 
 export function ProfilePage() {
   const toast = useToast();
   const { isSeller, refresh } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { data, isLoading, isError } = useProfile();
   const updateProfile = useUpdateProfile();
   const becomeSeller = useBecomeSeller();
   const { data: stripeData } = useStripeStatus();
   const stripeOnboarding = useStripeOnboarding();
+  const stripeRefresh = useStripeRefresh();
 
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
+
+  // Retour depuis l'onboarding Stripe hébergé : on resynchronise l'état du
+  // compte (appel live à Stripe) pour ne pas dépendre du webhook, puis on
+  // nettoie l'URL.
+  useEffect(() => {
+    const outcome = searchParams.get('stripe');
+    if (outcome === null) {
+      return;
+    }
+    if (outcome === 'return') {
+      void stripeRefresh
+        .mutateAsync()
+        .then(({ stripe }) => {
+          if (stripe.ready) {
+            toast.success('Compte de paiement prêt — vos ventes seront encaissées via Stripe.');
+          } else {
+            toast.success('Compte Stripe synchronisé.');
+          }
+        })
+        .catch(() => toast.error('Impossible de vérifier le statut de votre compte Stripe.'));
+    } else if (outcome === 'refresh') {
+      toast.error('Onboarding Stripe interrompu — réessayez.');
+    }
+    setSearchParams({}, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, setSearchParams]);
 
   const profile: ProfileData | null | undefined = data?.profile;
 

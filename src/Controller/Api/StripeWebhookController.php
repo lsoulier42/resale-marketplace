@@ -48,7 +48,7 @@ class StripeWebhookController extends ApiController
                     $this->onCheckoutCompleted($object, $orderRepository);
                     break;
                 case 'account.updated':
-                    $this->onAccountUpdated($object, $sellerRepository);
+                    $this->onAccountUpdated($object, $sellerRepository, $stripe);
                     break;
                 case 'charge.refunded':
                     $this->onChargeRefunded($object, $orderRepository);
@@ -76,7 +76,7 @@ class StripeWebhookController extends ApiController
     }
 
     /** @param object $account */
-    private function onAccountUpdated(object $account, SellerRepository $sellerRepository): void
+    private function onAccountUpdated(object $account, SellerRepository $sellerRepository, StripeService $stripe): void
     {
         if (!isset($account->id) || !is_string($account->id)) {
             return;
@@ -87,10 +87,7 @@ class StripeWebhookController extends ApiController
             return;
         }
 
-        $seller->setStripeAccountReady(
-            (bool) ($account->charges_enabled ?? false)
-            && (bool) ($account->details_submitted ?? false)
-        );
+        $seller->setStripeAccountReady($stripe->isAccountReady($account));
         $sellerRepository->createOrUpdate($seller);
     }
 

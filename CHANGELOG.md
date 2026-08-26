@@ -8,6 +8,8 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 
 ### Changé
 
+- **Stripe Connect sur Accounts v2** : les comptes vendeur·ses sont créés via l'API Accounts v2 (configuration « recipient », la plateforme est le marchand et transfère aux vendeur·ses), onboarding KYC hébergé via Account Link v2. Requis car Stripe rejette désormais la création de comptes v1 (et les plateformes françaises exigent des account tokens pour la configuration merchant). La readiness du compte se lit désormais sur `requirements` (compatible v1 et v2).
+- **Synchronisation Stripe au retour de l'onboarding** : nouvel endpoint `POST /api/me/stripe/refresh` (appel live à Stripe) appelé automatiquement par le profil au retour de l'onboarding hébergé (`?stripe=return`) — l'indicateur « compte prêt » s'affiche sans dépendre du webhook. Le webhook `account.updated` reste utilisé pour les mises à jour ultérieures.
 - **Refonte visuelle « Marketplace clair »** : palette neutre avec accent vert émeraude, typographie système, suppression du verre dépoli. Header marketplace sticky (logo, recherche, menu compte, nav secondaire), bottom-nav mobile, cartes produit nues en grille dense, fiches article avec barre d'achat sticky (mobile) et bloc vendeur.
 - **Catalogue** : recherche plein texte sur le titre (`?q=`), tri par prix (`?sort=price_asc|price_desc`), filtres par catégorie en sidebar (desktop) et chips (mobile), état URL partageable.
 

@@ -267,6 +267,12 @@ export const sellerApi = {
 export const stripeApi = {
   status: () => apiFetch<{ stripe: StripeStatusData }>('/api/me/stripe'),
 
+  // Resynchronise l'état du compte depuis Stripe (au retour de l'onboarding).
+  refresh: () =>
+    apiFetch<{ stripe: StripeStatusData }>('/api/me/stripe/refresh', {
+      method: 'POST',
+    }),
+
   onboarding: () =>
     apiFetch<{ url: string }>('/api/me/stripe/onboarding', {
       method: 'POST',

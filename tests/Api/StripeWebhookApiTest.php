@@ -85,6 +85,78 @@ class StripeWebhookApiTest extends ApiTestCase
         self::assertTrue($seller->isStripeAccountReady());
     }
 
+    public function testAccountUpdatedWithPendingRequirementsIsNotReady(): void
+    {
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+        $seller = $entityManager
+            ->getRepository(Seller::class)
+            ->findOneBy(['user' => $this->userEntity('jordan@example.test')]);
+        self::assertNotNull($seller);
+        $seller->setStripeAccountId('acct_v2_pending');
+        $seller->setStripeAccountReady(true);
+        $entityManager->flush();
+
+        // Compte v2 « recipient » pas encore onboardé : des exigences restent
+        // dues (instantané v1) même si charges_enabled est vrai.
+        $this->postWebhook([
+            'id' => 'evt_acct_pending',
+            'object' => 'event',
+            'type' => 'account.updated',
+            'data' => [
+                'object' => [
+                    'id' => 'acct_v2_pending',
+                    'object' => 'account',
+                    'charges_enabled' => true,
+                    'details_submitted' => true,
+                    'requirements' => [
+                        'currently_due' => ['external_account'],
+                        'past_due' => [],
+                    ],
+                ],
+            ],
+        ]);
+
+        $entityManager->clear();
+        $seller = $entityManager->getRepository(Seller::class)->findOneBy(['stripeAccountId' => 'acct_v2_pending']);
+        self::assertNotNull($seller);
+        self::assertFalse($seller->isStripeAccountReady());
+    }
+
+    public function testAccountUpdatedV2RequirementsClearMarksSellerReady(): void
+    {
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+        $seller = $entityManager
+            ->getRepository(Seller::class)
+            ->findOneBy(['user' => $this->userEntity('sam@example.test')]);
+        self::assertNotNull($seller);
+        $seller->setStripeAccountId('acct_v2_ready');
+        $seller->setStripeAccountReady(false);
+        $entityManager->flush();
+
+        // Compte v2 « recipient » pleinement onboardé : plus aucune exigence
+        // en cours ni en retard (charges_enabled peut rester vrai ici).
+        $this->postWebhook([
+            'id' => 'evt_acct_v2_ready',
+            'object' => 'event',
+            'type' => 'account.updated',
+            'data' => [
+                'object' => [
+                    'id' => 'acct_v2_ready',
+                    'object' => 'account',
+                    'requirements' => [
+                        'currently_due' => [],
+                        'past_due' => [],
+                    ],
+                ],
+            ],
+        ]);
+
+        $entityManager->clear();
+        $seller = $entityManager->getRepository(Seller::class)->findOneBy(['stripeAccountId' => 'acct_v2_ready']);
+        self::assertNotNull($seller);
+        self::assertTrue($seller->isStripeAccountReady());
+    }
+
     public function testChargeRefundedCancelsOrder(): void
     {
         $this->login('camille@example.test');
