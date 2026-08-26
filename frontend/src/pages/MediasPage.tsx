@@ -1,6 +1,6 @@
 import { useRef, useState, type ChangeEvent } from 'react';
 import { ImagePlus, Trash2 } from 'lucide-react';
-import { GlassCard } from '../components/ui/GlassCard';
+import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
 import { EmptyState } from '../components/ui/EmptyState';
@@ -67,13 +67,13 @@ export function MediasPage() {
           onChange={handleFileChange}
           aria-label="Choisir un fichier"
         />
-        <Button variant="glass" onClick={() => fileInputRef.current?.click()} disabled={uploadMedia.isPending}>
+        <Button variant="secondary" onClick={() => fileInputRef.current?.click()} disabled={uploadMedia.isPending}>
           <ImagePlus size={16} /> {uploadMedia.isPending ? 'Upload…' : 'Uploader une photo'}
         </Button>
       </div>
 
       {isError && (
-        <div className="glass-card" style={{ padding: '1.2rem', textAlign: 'center' }}>
+        <div className="card" style={{ padding: '1.2rem', textAlign: 'center' }}>
           <p className="text-muted">Impossible de charger vos médias.</p>
         </div>
       )}
@@ -81,7 +81,7 @@ export function MediasPage() {
       {isLoading ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '1rem', marginTop: '1.2rem' }}>
           {Array.from({ length: 4 }, (_, index) => (
-            <div key={index} className="glass-card" style={{ height: 140 }} />
+            <div key={index} className="card" style={{ height: 140 }} />
           ))}
         </div>
       ) : medias.length === 0 ? (
@@ -100,7 +100,7 @@ export function MediasPage() {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '1rem', marginTop: '1.2rem' }}>
           {medias.map((media) => (
-            <GlassCard key={media.uuid} hover style={{ overflow: 'hidden', position: 'relative' }}>
+            <Card key={media.uuid} hover style={{ overflow: 'hidden', position: 'relative' }}>
               <ItemImage src={media.fileUrl} alt="Média" className="media-grid-image" />
               <div className="media-grid-footer">
                 <span className="text-muted text-small">{media.fileType}</span>
@@ -110,10 +110,10 @@ export function MediasPage() {
                   onClick={() => setDeleting(media)}
                   aria-label="Supprimer le média"
                 >
-                  <Trash2 size={14} style={{ color: '#be123c' }} />
+                  <Trash2 size={14} style={{ color: 'var(--color-danger)' }} />
                 </Button>
               </div>
-            </GlassCard>
+            </Card>
           ))}
         </div>
       )}

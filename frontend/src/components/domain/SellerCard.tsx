@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Users } from 'lucide-react';
-import { GlassCard } from '../ui/GlassCard';
+import { Card } from '../ui/Card';
 import { Rating } from '../ui/Rating';
 import { ItemImage } from './ItemImage';
 import type { SellerData } from '../../api/types';
@@ -8,7 +8,7 @@ import type { SellerData } from '../../api/types';
 /** Carte vendeur·se : avatar, nom, note moyenne, nombre d'articles. */
 export function SellerCard({ seller }: { seller: SellerData }) {
   return (
-    <GlassCard hover className="seller-card">
+    <Card hover className="seller-card">
       <Link to={`/sellers/${seller.uuid}`} className="seller-card-link">
         <div className="seller-card-avatar">
           <ItemImage
@@ -27,7 +27,7 @@ export function SellerCard({ seller }: { seller: SellerData }) {
           {seller.reviewAvg !== null ? (
             <Rating value={seller.reviewAvg} readOnly />
           ) : (
-            <span className="badge badge-muted">
+            <span className="badge badge-neutral">
               <Users size={12} /> Nouveau·elle
             </span>
           )}
@@ -36,6 +36,6 @@ export function SellerCard({ seller }: { seller: SellerData }) {
           </span>
         </div>
       </Link>
-    </GlassCard>
+    </Card>
   );
 }

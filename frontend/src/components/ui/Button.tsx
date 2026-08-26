@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
-type ButtonVariant = 'primary' | 'glass' | 'ghost' | 'danger';
-type ButtonSize = 'sm' | 'md';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
+type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -9,7 +9,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
 
-/** Bouton pilule : primaire dégradé rose→mauve, verre, fantôme ou danger. */
+/** Bouton marketplace : primaire (accent), secondaire, fantôme ou danger. */
 export function Button({
   variant = 'primary',
   size = 'md',
@@ -21,6 +21,7 @@ export function Button({
     'btn',
     `btn-${variant}`,
     size === 'sm' ? 'btn-sm' : '',
+    size === 'lg' ? 'btn-lg' : '',
     className,
   ]
     .filter(Boolean)

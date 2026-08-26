@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { catalogApi } from '../api/endpoints';
+import { catalogApi, type ItemSort } from '../api/endpoints';
 
 export const ITEMS_PER_PAGE = 12;
 
@@ -7,10 +7,10 @@ export function useHome() {
   return useQuery({ queryKey: ['home'], queryFn: catalogApi.home });
 }
 
-export function useItems(page: number, category?: string) {
+export function useItems(page: number, category?: string, q?: string, sort?: ItemSort) {
   return useQuery({
-    queryKey: ['items', page, category ?? 'all'],
-    queryFn: () => catalogApi.items({ page, limit: ITEMS_PER_PAGE, category }),
+    queryKey: ['items', page, category ?? 'all', q ?? '', sort ?? 'recent'],
+    queryFn: () => catalogApi.items({ page, limit: ITEMS_PER_PAGE, category, q, sort }),
   });
 }
 

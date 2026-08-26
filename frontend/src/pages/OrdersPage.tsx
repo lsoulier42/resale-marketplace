@@ -13,7 +13,7 @@ export function OrdersPage() {
       <p className="page-subtitle">Suivez vos achats et leurs statuts.</p>
 
       {isError && (
-        <div className="glass-card" style={{ padding: '1.2rem', textAlign: 'center' }}>
+        <div className="card" style={{ padding: '1.2rem', textAlign: 'center' }}>
           <p className="text-muted">Impossible de charger vos commandes.</p>
         </div>
       )}
@@ -21,7 +21,7 @@ export function OrdersPage() {
       {isLoading ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {Array.from({ length: 3 }, (_, index) => (
-            <div key={index} className="glass-card" style={{ padding: '1rem', display: 'flex', gap: '1rem' }}>
+            <div key={index} className="card" style={{ padding: '1rem', display: 'flex', gap: '1rem' }}>
               <Skeleton height={72} borderRadius={14} width={72} />
               <div style={{ flex: 1 }}>
                 <Skeleton height={18} width="55%" />

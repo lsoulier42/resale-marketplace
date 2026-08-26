@@ -1,11 +1,11 @@
 import type { OrderStatus } from '../../api/types';
 
 const STATUS_CONFIG: Record<OrderStatus, { label: string; className: string }> = {
-  pending_payment: { label: 'En attente de paiement', className: 'badge-amber' },
-  paid: { label: 'Payé', className: 'badge-mauve' },
-  shipped: { label: 'Expédié', className: 'badge-pink' },
-  delivered: { label: 'Livré', className: 'badge-green' },
-  cancelled: { label: 'Annulé', className: 'badge-red' },
+  pending_payment: { label: 'En attente de paiement', className: 'badge-warning' },
+  paid: { label: 'Payé', className: 'badge-accent' },
+  shipped: { label: 'Expédié', className: 'badge-accent' },
+  delivered: { label: 'Livré', className: 'badge-success' },
+  cancelled: { label: 'Annulé', className: 'badge-danger' },
 };
 
 interface StatusBadgeProps {

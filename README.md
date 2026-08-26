@@ -10,11 +10,13 @@
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-A peer-to-peer resale marketplace, ready to deploy out of the box: **Symfony 8.1 / PHP 8.5** as a JSON API (`/api/*`), **React 19 SPA** (card-based, pastel glassmorphism) served by nginx, and **PostgreSQL 18**. The frontend lives in `frontend/` (Vite + TypeScript).
+A peer-to-peer resale marketplace, ready to deploy out of the box: **Symfony 8.1 / PHP 8.5** as a JSON API (`/api/*`), **React 19 SPA** (clean, product-first marketplace UI) served by nginx, and **PostgreSQL 18**. The frontend lives in `frontend/` (Vite + TypeScript).
 
 ## Design
 
-**“Pastel Glass”** — a soft rose/mauve palette, frosted-glass cards with a subtle blur, and the rounded Quicksand typeface. All visual decisions are centralized in design tokens (`frontend/src/styles/tokens.css`): a 6-step rose scale, a 6-step mauve scale, ink/muted colors for readability, glass surfaces (blur, borders, soft mauve shadows), brand gradients, 20 px card radius and pill buttons.
+**“Marketplace clair”** — a light, product-first direction inspired by the UX of modern C2C marketplaces: a neutral, near-monochrome palette with a coherent emerald accent, system typography, bare product cards (photo / title / price) in dense responsive grids, a sticky marketplace header (logo, working search, account menu, secondary nav), a mobile bottom-nav and a sticky buy bar on item pages.
+
+All visual decisions are centralized in design tokens (`frontend/src/styles/tokens.css`); component styles live in `frontend/src/styles/` (`base`, `layout`, `components`, `catalog`, `utils`).
 
 > The UI is currently in French; the codebase (comments, naming) is in French too.
 
@@ -99,7 +101,7 @@ make frontend-dev   # Vite on :5173, proxies /api and /uploads to :8081
 
 ### Fixtures & demo accounts
 
-Fixtures: 6 categories, 3 sellers, 3 buyers + admin, items, orders, reviews, SVG visuals in `public/uploads/`. `--purge-with-truncate` empties the tables and resets the IDs.
+Fixtures: 6 categories, 3 sellers, 3 buyers + admin, items, orders, reviews, and royalty-free product photos (Pexels license, sources in `src/DataFixtures/medias/CREDITS.md`). The photos are copied into `public/uploads/` at load time. `--purge-with-truncate` empties the tables and resets the IDs.
 
 Common password: `demo1234`
 
@@ -127,7 +129,7 @@ The **CI (GitHub Actions)** runs these checks on every push to `main` and on eve
 - **Payloads**: explicit mapping through `src/Service/CatalogPresenter` and `src/Service/OrderPresenter` (no reflective serialization — no `password`/Stripe account leaks in public reads).
 - **Payments (Stripe Connect)**: one standard Connect account per seller (KYC onboarding via Account Link), hosted Checkout Session with platform fee (`application_fee_amount`), webhooks (`checkout.session.completed` → paid, `account.updated`, `charge.refunded`). Inactive while `STRIPE_SECRET_KEY` is empty (development).
 - **Business rules**: single-purchase (OneToOne Item↔Order), `availableCount` decremented on order, status transitions via `OrderStatus::allowedTransitions()`.
-- **React SPA**: `frontend/src/` — `api/` (fetch client + CSRF + endpoints), `auth/` (AuthProvider, guards), `hooks/` (TanStack Query), `components/` (layout + glass UI kit + domain), `pages/` (catalog, buyer, seller, admin), `styles/` (rose/mauve tokens, glassmorphism).
+- **React SPA**: `frontend/src/` — `api/` (fetch client + CSRF + endpoints), `auth/` (AuthProvider, guards), `hooks/` (TanStack Query), `components/` (layout + UI kit + domain), `pages/` (catalog, buyer, seller, admin), `styles/` (design tokens + neutral marketplace styles).
 
 ## Environment variables
 

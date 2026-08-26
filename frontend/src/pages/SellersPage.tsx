@@ -13,7 +13,7 @@ export function SellersPage() {
       <p className="page-subtitle">Découvrez les vendeur·ses derrière chaque article.</p>
 
       {isError && (
-        <div className="glass-card" style={{ padding: '1.2rem', textAlign: 'center' }}>
+        <div className="card" style={{ padding: '1.2rem', textAlign: 'center' }}>
           <p className="text-muted">Impossible de charger les vendeur·ses.</p>
         </div>
       )}
@@ -21,7 +21,7 @@ export function SellersPage() {
       {isLoading ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.2rem' }}>
           {Array.from({ length: 3 }, (_, index) => (
-            <div key={index} className="glass-card" style={{ padding: '1.6rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.6rem' }}>
+            <div key={index} className="card" style={{ padding: '1.6rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.6rem' }}>
               <Skeleton height={86} borderRadius="50%" width={86} />
               <Skeleton height={18} width="50%" />
               <Skeleton height={14} width="75%" />

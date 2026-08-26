@@ -4,6 +4,13 @@ Toutes les modifications notables de Resale Marketplace sont documentées dans c
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et ce projet respecte le [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [Unreleased]
+
+### Changé
+
+- **Refonte visuelle « Marketplace clair »** : palette neutre avec accent vert émeraude, typographie système, suppression du verre dépoli. Header marketplace sticky (logo, recherche, menu compte, nav secondaire), bottom-nav mobile, cartes produit nues en grille dense, fiches article avec barre d'achat sticky (mobile) et bloc vendeur.
+- **Catalogue** : recherche plein texte sur le titre (`?q=`), tri par prix (`?sort=price_asc|price_desc`), filtres par catégorie en sidebar (desktop) et chips (mobile), état URL partageable.
+
 ## [1.0.0] - 2026-08-26
 
 Première release publique : marketplace de revente entre particuliers, générique et prête à l'emploi (Symfony API JSON + SPA React, PostgreSQL).

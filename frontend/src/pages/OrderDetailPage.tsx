@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, CreditCard, MapPin, Truck } from 'lucide-react';
-import { GlassCard } from '../components/ui/GlassCard';
+import { Card } from '../components/ui/Card';
 import { StatusBadge } from '../components/ui/StatusBadge';
 import { Button } from '../components/ui/Button';
 import { Field } from '../components/ui/Field';
@@ -51,7 +51,7 @@ export function OrderDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="glass-card" style={{ padding: '1.6rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div className="card" style={{ padding: '1.6rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Skeleton height={24} width={240} />
         <Skeleton height={120} borderRadius={16} />
       </div>
@@ -60,12 +60,12 @@ export function OrderDetailPage() {
 
   if (isError || !order) {
     return (
-      <GlassCard style={{ padding: '2rem', textAlign: 'center' }}>
+      <Card style={{ padding: '2rem', textAlign: 'center' }}>
         <p className="text-muted">Commande introuvable.</p>
-        <Link to="/orders" className="btn btn-glass mt-2">
+        <Link to="/orders" className="btn btn-secondary mt-2">
           <ArrowLeft size={16} /> Retour à mes commandes
         </Link>
-      </GlassCard>
+      </Card>
     );
   }
 
@@ -116,7 +116,7 @@ export function OrderDetailPage() {
         <ArrowLeft size={15} /> Retour à mes commandes
       </Link>
 
-      <GlassCard style={{ padding: '1.8rem', marginBottom: '1.4rem' }}>
+      <Card style={{ padding: '1.8rem', marginBottom: '1.4rem' }}>
         <div className="flex-between" style={{ alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.8rem' }}>
           <div>
             <h1 className="page-title" style={{ marginBottom: '0.3rem' }}>
@@ -139,10 +139,10 @@ export function OrderDetailPage() {
             </div>
           ))}
         </div>
-      </GlassCard>
+      </Card>
 
       <div className="item-detail" style={{ marginBottom: '1.4rem' }}>
-        <GlassCard style={{ padding: '1.5rem' }}>
+        <Card style={{ padding: '1.5rem' }}>
           <div className="order-detail-item">
             <ItemImage src={order.item.medias[0] ?? ''} alt={order.item.title} className="order-card-image" />
             <div style={{ flex: 1 }}>
@@ -183,16 +183,16 @@ export function OrderDetailPage() {
               {checkout.isPending ? 'Redirection vers Stripe…' : 'Payer avec Stripe'}
             </Button>
           )}
-        </GlassCard>
+        </Card>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.4rem' }}>
-          <GlassCard style={{ padding: '1.5rem' }}>
+          <Card style={{ padding: '1.5rem' }}>
             <h2 style={{ fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <MapPin size={18} style={{ color: 'var(--rose-400)' }} /> Livraison
+              <MapPin size={18} style={{ color: 'var(--color-accent)' }} /> Livraison
             </h2>
             {order.shippingAddress ? (
               <div className="text-muted mt-2">
-                <p className="fw-bold" style={{ color: 'var(--ink)' }}>{order.shippingAddress.name}</p>
+                <p className="fw-bold" style={{ color: 'var(--color-text)' }}>{order.shippingAddress.name}</p>
                 <p>{order.shippingAddress.addressLine}</p>
                 <p>
                   {order.shippingAddress.zipCode} {order.shippingAddress.city}
@@ -208,11 +208,11 @@ export function OrderDetailPage() {
                 {order.shippingProvider ?? 'Transporteur'} — {order.trackingNumber}
               </p>
             )}
-          </GlassCard>
+          </Card>
 
           {/* Changement de statut (vendeur·se / admin) */}
           {order.canUpdateStatus && order.allowedTransitions.length > 0 && (
-            <GlassCard style={{ padding: '1.5rem' }}>
+            <Card style={{ padding: '1.5rem' }}>
               <h2 style={{ fontSize: '1.05rem' }}>Mettre à jour le statut</h2>
               <form onSubmit={handleStatusSubmit} className="mt-2">
                 <Field label="Nouveau statut" htmlFor="order-next-status">
@@ -256,12 +256,12 @@ export function OrderDetailPage() {
                   {updateStatus.isPending ? 'Mise à jour…' : 'Enregistrer'}
                 </Button>
               </form>
-            </GlassCard>
+            </Card>
           )}
 
           {/* Avis client */}
           {order.canReview && (
-            <GlassCard style={{ padding: '1.5rem' }}>
+            <Card style={{ padding: '1.5rem' }}>
               <h2 style={{ fontSize: '1.05rem' }}>Laisser un avis</h2>
               <form onSubmit={handleReviewSubmit} className="mt-2">
                 <Field label="Note" htmlFor="review-star">
@@ -280,13 +280,13 @@ export function OrderDetailPage() {
                   {createReview.isPending ? 'Envoi…' : 'Publier mon avis'}
                 </Button>
               </form>
-            </GlassCard>
+            </Card>
           )}
 
           {order.hasReview && (
-            <GlassCard style={{ padding: '1.2rem 1.5rem' }}>
+            <Card style={{ padding: '1.2rem 1.5rem' }}>
               <p className="text-muted">✓ Merci ! Vous avez déjà laissé un avis pour cette commande.</p>
-            </GlassCard>
+            </Card>
           )}
         </div>
       </div>

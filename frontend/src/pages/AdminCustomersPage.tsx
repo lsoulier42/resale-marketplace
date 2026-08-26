@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Trash2, Users } from 'lucide-react';
-import { GlassCard } from '../components/ui/GlassCard';
+import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
 import { EmptyState } from '../components/ui/EmptyState';
@@ -37,7 +37,7 @@ export function AdminCustomersPage() {
       <p className="page-subtitle">Les comptes acheteur·ses de la boutique ({customers.length}).</p>
 
       {isError && (
-        <div className="glass-card" style={{ padding: '1.2rem', textAlign: 'center' }}>
+        <div className="card" style={{ padding: '1.2rem', textAlign: 'center' }}>
           <p className="text-muted">Impossible de charger les acheteur·ses.</p>
         </div>
       )}
@@ -45,7 +45,7 @@ export function AdminCustomersPage() {
       {isLoading ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
           {Array.from({ length: 3 }, (_, index) => (
-            <div key={index} className="glass-card" style={{ padding: '1rem' }}>
+            <div key={index} className="card" style={{ padding: '1rem' }}>
               <Skeleton height={18} width="50%" />
             </div>
           ))}
@@ -55,7 +55,7 @@ export function AdminCustomersPage() {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
           {customers.map((customer) => (
-            <GlassCard key={customer.uuid} style={{ padding: '1rem 1.2rem' }}>
+            <Card key={customer.uuid} style={{ padding: '1rem 1.2rem' }}>
               <div className="flex-between" style={{ gap: '1rem' }}>
                 <div style={{ minWidth: 0 }}>
                   <p className="fw-bold" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -64,7 +64,7 @@ export function AdminCustomersPage() {
                   <p className="text-muted text-small">{customer.email}</p>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', flexShrink: 0 }}>
-                  <span className="badge badge-pink">
+                  <span className="badge badge-accent">
                     {customer.orderCount} commande{customer.orderCount > 1 ? 's' : ''}
                   </span>
                   <Button
@@ -73,11 +73,11 @@ export function AdminCustomersPage() {
                     onClick={() => setDeleting(customer)}
                     aria-label={`Supprimer ${customer.email}`}
                   >
-                    <Trash2 size={15} style={{ color: '#be123c' }} />
+                    <Trash2 size={15} style={{ color: 'var(--color-danger)' }} />
                   </Button>
                 </div>
               </div>
-            </GlassCard>
+            </Card>
           ))}
         </div>
       )}

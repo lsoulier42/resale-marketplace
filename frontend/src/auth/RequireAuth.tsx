@@ -9,7 +9,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
 
   if (loading) {
     return (
-      <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center', maxWidth: 420, margin: '3rem auto' }}>
+      <div className="card" style={{ padding: '2rem', textAlign: 'center', maxWidth: 420, margin: '3rem auto' }}>
         Chargement…
       </div>
     );

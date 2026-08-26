@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '../auth/AuthContext';
@@ -75,7 +75,8 @@ describe('ItemsPage', () => {
     expect(await screen.findByText('Veste en jean')).toBeInTheDocument();
     expect(screen.getByText('14 articles disponibles')).toBeInTheDocument();
     expect(screen.getByLabelText('Page suivante')).toBeEnabled();
-    expect(screen.getByText('Mode')).toBeInTheDocument();
+    // La catégorie apparaît dans la sidebar de filtres et dans les chips mobiles.
+    expect(screen.getAllByText('Mode').length).toBeGreaterThanOrEqual(1);
   });
 
   it('recharge la liste quand on change de catégorie', async () => {
@@ -98,9 +99,9 @@ describe('ItemsPage', () => {
     // Attend le chargement initial de la liste.
     expect(await screen.findByText('Veste en jean')).toBeInTheDocument();
 
-    fireEvent.change(screen.getByLabelText('Filtrer par catégorie'), {
-      target: { value: 'cat-2' },
-    });
+    // Clique sur la catégorie « Mode » dans la sidebar de filtres.
+    const filters = screen.getByRole('complementary', { name: 'Filtres' });
+    fireEvent.click(within(filters).getByRole('button', { name: /Mode/ }));
 
     const itemsCalls = fetchMock.mock.calls.filter(([input]) =>
       String(input).includes('/api/items'),

@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { ShieldCheck, Pencil, Trash2, Plus } from 'lucide-react';
-import { GlassCard } from '../components/ui/GlassCard';
+import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Field } from '../components/ui/Field';
 import { Modal } from '../components/ui/Modal';
@@ -95,13 +95,13 @@ export function AdminUsersPage() {
           </h1>
           <p className="text-muted text-small">{users.length} comptes</p>
         </div>
-        <Button variant="glass" onClick={openCreate}>
+        <Button variant="secondary" onClick={openCreate}>
           <Plus size={16} /> Créer un utilisateur
         </Button>
       </div>
 
       {isError && (
-        <div className="glass-card" style={{ padding: '1.2rem', textAlign: 'center' }}>
+        <div className="card" style={{ padding: '1.2rem', textAlign: 'center' }}>
           <p className="text-muted">Impossible de charger les utilisateurs.</p>
         </div>
       )}
@@ -109,7 +109,7 @@ export function AdminUsersPage() {
       {isLoading ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginTop: '1.2rem' }}>
           {Array.from({ length: 4 }, (_, index) => (
-            <div key={index} className="glass-card" style={{ padding: '1rem' }}>
+            <div key={index} className="card" style={{ padding: '1rem' }}>
               <Skeleton height={18} width="50%" />
             </div>
           ))}
@@ -119,7 +119,7 @@ export function AdminUsersPage() {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginTop: '1.2rem' }}>
           {users.map((user) => (
-            <GlassCard key={user.uuid} style={{ padding: '1rem 1.2rem' }}>
+            <Card key={user.uuid} style={{ padding: '1rem 1.2rem' }}>
               <div className="flex-between" style={{ gap: '1rem' }}>
                 <div style={{ minWidth: 0 }}>
                   <p className="fw-bold" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -127,11 +127,11 @@ export function AdminUsersPage() {
                   </p>
                   <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.3rem', flexWrap: 'wrap' }}>
                     {user.roles.map((role) => (
-                      <span key={role} className={`badge ${role === 'ROLE_ADMIN' ? 'badge-mauve' : 'badge-pink'}`}>
+                      <span key={role} className={`badge ${role === 'ROLE_ADMIN' ? 'badge-accent' : 'badge-accent'}`}>
                         {role === 'ROLE_ADMIN' ? 'Admin' : 'Utilisateur'}
                       </span>
                     ))}
-                    {!user.isVerified && <span className="badge badge-amber">Non vérifié</span>}
+                    {!user.isVerified && <span className="badge badge-warning">Non vérifié</span>}
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
@@ -139,11 +139,11 @@ export function AdminUsersPage() {
                     <Pencil size={15} />
                   </Button>
                   <Button variant="ghost" size="sm" onClick={() => setDeleting(user)} aria-label={`Supprimer ${user.email}`}>
-                    <Trash2 size={15} style={{ color: '#be123c' }} />
+                    <Trash2 size={15} style={{ color: 'var(--color-danger)' }} />
                   </Button>
                 </div>
               </div>
-            </GlassCard>
+            </Card>
           ))}
         </div>
       )}
@@ -188,7 +188,7 @@ export function AdminUsersPage() {
             />
           </Field>
           <div className="field">
-            <span className="field-label" style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--ink-muted)' }}>
+            <span className="field-label" style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-text-muted)' }}>
               Rôles
             </span>
             <div style={{ display: 'flex', gap: '1.2rem', marginTop: '0.3rem' }}>

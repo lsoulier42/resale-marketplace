@@ -54,7 +54,7 @@ export function ConfirmEmailPage() {
         padding: '1.5rem',
       }}
     >
-      <div className="glass-panel" style={{ width: '100%', maxWidth: 420, padding: '2.4rem', textAlign: 'center' }}>
+      <div className="card" style={{ width: '100%', maxWidth: 420, padding: '2.4rem', textAlign: 'center' }}>
         {status === 'loading' && (
           <>
             <h1 style={{ fontSize: '1.4rem' }}>Confirmation de votre adresse email…</h1>
@@ -66,7 +66,7 @@ export function ConfirmEmailPage() {
 
         {status === 'success' && (
           <>
-            <CheckCircle2 size={44} style={{ color: 'var(--emerald-500, #10b981)' }} />
+            <CheckCircle2 size={44} style={{ color: 'var(--color-success)' }} />
             <h1 style={{ marginTop: '0.9rem', fontSize: '1.4rem' }}>Compte confirmé !</h1>
             <p className="text-muted text-small" style={{ marginTop: '0.5rem', lineHeight: 1.6 }}>
               Votre adresse email est vérifiée, vous pouvez maintenant vous connecter.
@@ -81,7 +81,7 @@ export function ConfirmEmailPage() {
 
         {status === 'error' && (
           <>
-            <XCircle size={44} style={{ color: 'var(--rose-500, #f43f5e)' }} />
+            <XCircle size={44} style={{ color: 'var(--color-danger)' }} />
             <h1 style={{ marginTop: '0.9rem', fontSize: '1.4rem' }}>Lien invalide ou expiré</h1>
             <p className="text-muted text-small" style={{ marginTop: '0.5rem', lineHeight: 1.6 }}>
               {error}

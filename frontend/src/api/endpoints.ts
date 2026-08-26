@@ -19,21 +19,27 @@ import type {
   StripeStatusData,
 } from './types';
 
+export type ItemSort = 'recent' | 'price_asc' | 'price_desc';
+
 interface ItemsParams {
   page?: number;
   limit?: number;
   category?: string;
+  q?: string;
+  sort?: ItemSort;
 }
 
 /** Appels API de la vitrine publique. */
 export const catalogApi = {
   home: () => apiFetch<HomeData>('/api/home'),
 
-  items: ({ page, limit, category }: ItemsParams = {}) => {
+  items: ({ page, limit, category, q, sort }: ItemsParams = {}) => {
     const qs = new URLSearchParams();
     if (page !== undefined) qs.set('page', String(page));
     if (limit !== undefined) qs.set('limit', String(limit));
     if (category !== undefined && category !== '') qs.set('category', category);
+    if (q !== undefined && q !== '') qs.set('q', q);
+    if (sort !== undefined && sort !== 'recent') qs.set('sort', sort);
     const query = qs.toString();
 
     return apiFetch<Paged<ItemCardData>>(`/api/items${query ? `?${query}` : ''}`);

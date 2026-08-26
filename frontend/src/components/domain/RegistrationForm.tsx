@@ -82,14 +82,14 @@ export function RegistrationForm({
         padding: '1.5rem',
       }}
     >
-      <div className="glass-panel" style={{ width: '100%', maxWidth: 420, padding: '2.4rem' }}>
+      <div className="card" style={{ width: '100%', maxWidth: 420, padding: '2.4rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '1.8rem' }}>
           <img
             src="/favicon.svg"
             alt="Resale Marketplace"
             width={56}
             height={56}
-            style={{ borderRadius: 16, boxShadow: '0 8px 24px rgba(139,92,246,.35)' }}
+            style={{ borderRadius: 16, boxShadow: '0 8px 24px rgba(16,24,40,0.12)' }}
           />
           <h1 style={{ marginTop: '0.9rem', fontSize: '1.5rem' }}>{title}</h1>
           <p className="text-muted text-small" style={{ marginTop: '0.3rem' }}>
@@ -99,7 +99,7 @@ export function RegistrationForm({
 
         {sent ? (
           <div style={{ textAlign: 'center' }}>
-            <MailCheck size={44} style={{ color: 'var(--mauve-500)' }} />
+            <MailCheck size={44} style={{ color: 'var(--color-accent)' }} />
             <h2 style={{ marginTop: '0.9rem', fontSize: '1.2rem' }}>Vérifiez votre boîte mail</h2>
             <p className="text-muted text-small" style={{ marginTop: '0.5rem', lineHeight: 1.6 }}>
               Un email de confirmation a été envoyé à <strong>{email}</strong>. Cliquez sur le

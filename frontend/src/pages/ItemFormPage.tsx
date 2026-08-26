@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Plus } from 'lucide-react';
-import { GlassCard } from '../components/ui/GlassCard';
+import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Field } from '../components/ui/Field';
 import { Skeleton } from '../components/ui/Skeleton';
@@ -81,22 +81,22 @@ export function ItemFormPage() {
 
   if (!isSeller) {
     return (
-      <GlassCard style={{ padding: '2rem', textAlign: 'center', maxWidth: 560, margin: '2rem auto' }}>
+      <Card style={{ padding: '2rem', textAlign: 'center', maxWidth: 560, margin: '2rem auto' }}>
         <h1 className="page-title">Publier un article</h1>
         <p className="text-muted">
           Seul·es les vendeur·ses peuvent publier des articles. Contactez l'équipe pour ouvrir
           votre boutique.
         </p>
-        <Link to="/" className="btn btn-glass mt-2">
+        <Link to="/" className="btn btn-secondary mt-2">
           Retour à l'accueil
         </Link>
-      </GlassCard>
+      </Card>
     );
   }
 
   if (isEdit && itemLoading) {
     return (
-      <div className="glass-card" style={{ padding: '1.6rem' }}>
+      <div className="card" style={{ padding: '1.6rem' }}>
         <Skeleton height={26} width={220} />
       </div>
     );
@@ -109,7 +109,7 @@ export function ItemFormPage() {
       </Link>
       <h1 className="page-title">{isEdit ? 'Modifier l’article' : 'Publier un article'}</h1>
 
-      <GlassCard style={{ padding: '1.8rem' }}>
+      <Card style={{ padding: '1.8rem' }}>
         <form onSubmit={handleSubmit}>
           <Field label="Titre" htmlFor="item-title">
             <input
@@ -214,7 +214,7 @@ export function ItemFormPage() {
             </Link>
           </div>
         </form>
-      </GlassCard>
+      </Card>
     </div>
   );
 }

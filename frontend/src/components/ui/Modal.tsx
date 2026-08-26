@@ -35,7 +35,7 @@ export function Modal({ open, title, onClose, children, footer }: ModalProps) {
       role="presentation"
     >
       <div
-        className="glass-panel modal"
+        className="card modal"
         role="dialog"
         aria-modal="true"
         aria-label={title}

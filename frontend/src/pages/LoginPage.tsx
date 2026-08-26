@@ -16,7 +16,7 @@ export function LoginPage() {
   const [resendMessage, setResendMessage] = useState<string | null>(null);
 
   if (loading) {
-    return <div className="glass-panel page-title" style={{ maxWidth: 420, margin: '3rem auto', padding: '2rem', textAlign: 'center' }}>Chargement…</div>;
+    return <div className="card page-title" style={{ maxWidth: 420, margin: '3rem auto', padding: '2rem', textAlign: 'center' }}>Chargement…</div>;
   }
   if (user) {
     return <Navigate to="/" replace />;
@@ -59,9 +59,9 @@ export function LoginPage() {
         padding: '1.5rem',
       }}
     >
-      <div className="glass-panel" style={{ width: '100%', maxWidth: 420, padding: '2.4rem' }}>
+      <div className="card" style={{ width: '100%', maxWidth: 420, padding: '2.4rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '1.8rem' }}>
-          <img src="/favicon.svg" alt="Resale Marketplace" width={56} height={56} style={{ borderRadius: 16, boxShadow: '0 8px 24px rgba(139,92,246,.35)' }} />
+          <img src="/favicon.svg" alt="Resale Marketplace" width={56} height={56} style={{ borderRadius: 16, boxShadow: '0 8px 24px rgba(16,24,40,0.12)' }} />
           <h1 style={{ marginTop: '0.9rem', fontSize: '1.5rem' }}>Bienvenue sur Resale Marketplace</h1>
           <p className="text-muted text-small" style={{ marginTop: '0.3rem' }}>
             Connectez-vous pour découvrir la boutique
@@ -139,7 +139,7 @@ export function LoginPage() {
         </form>
 
         <p className="text-muted text-small" style={{ textAlign: 'center', marginTop: '1.4rem' }}>
-          <Heart size={12} style={{ verticalAlign: '-2px', color: 'var(--rose-400)' }} />{' '}
+          <Heart size={12} style={{ verticalAlign: '-2px', color: 'var(--color-accent)' }} />{' '}
           Pas encore de compte ? <Link to="/register">Créer un compte</Link> ·{' '}
           <Link to="/">Accueil</Link>
         </p>

@@ -13,7 +13,7 @@ export function CategoriesPage() {
       <p className="page-subtitle">Parcourez la boutique par catégorie.</p>
 
       {isError && (
-        <div className="glass-card" style={{ padding: '1.2rem', textAlign: 'center' }}>
+        <div className="card" style={{ padding: '1.2rem', textAlign: 'center' }}>
           <p className="text-muted">Impossible de charger les catégories.</p>
         </div>
       )}
@@ -21,7 +21,7 @@ export function CategoriesPage() {
       {isLoading ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1.2rem' }}>
           {Array.from({ length: 6 }, (_, index) => (
-            <div key={index} className="glass-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            <div key={index} className="card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
               <Skeleton height={44} borderRadius={14} width={44} />
               <Skeleton height={18} width="60%" />
               <Skeleton height={14} width="85%" />

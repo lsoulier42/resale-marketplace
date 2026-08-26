@@ -29,11 +29,11 @@ export function SellerRegisterPage() {
       footer={
         <>
           <p className="text-muted text-small" style={{ marginBottom: '0.6rem' }}>
-            <Heart size={12} style={{ verticalAlign: '-2px', color: 'var(--rose-400)' }} /> Déjà
+            <Heart size={12} style={{ verticalAlign: '-2px', color: 'var(--color-accent)' }} /> Déjà
             inscrit·e ? <Link to="/login">Se connecter</Link>
           </p>
           <p className="text-muted text-small">
-            <ShoppingBag size={12} style={{ verticalAlign: '-2px', color: 'var(--mauve-500)' }} />{' '}
+            <ShoppingBag size={12} style={{ verticalAlign: '-2px', color: 'var(--color-accent)' }} />{' '}
             Vous voulez juste acheter ? <Link to="/register">Créer un compte client</Link>
           </p>
         </>

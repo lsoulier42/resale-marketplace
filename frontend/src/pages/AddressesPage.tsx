@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { MapPin, Plus, Pencil, Trash2 } from 'lucide-react';
-import { GlassCard } from '../components/ui/GlassCard';
+import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Field } from '../components/ui/Field';
 import { Modal } from '../components/ui/Modal';
@@ -96,7 +96,7 @@ export function AddressesPage() {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         {Array.from({ length: 2 }, (_, index) => (
-          <div key={index} className="glass-card" style={{ padding: '1.2rem' }}>
+          <div key={index} className="card" style={{ padding: '1.2rem' }}>
             <Skeleton height={18} width="40%" />
             <Skeleton height={14} width="65%" />
           </div>
@@ -107,9 +107,9 @@ export function AddressesPage() {
 
   if (isError) {
     return (
-      <GlassCard style={{ padding: '1.5rem', textAlign: 'center' }}>
+      <Card style={{ padding: '1.5rem', textAlign: 'center' }}>
         <p className="text-muted">Impossible de charger vos adresses.</p>
-      </GlassCard>
+      </Card>
     );
   }
 
@@ -124,7 +124,7 @@ export function AddressesPage() {
           </h1>
           <p className="text-muted text-small">Utilisées pour la livraison de vos commandes.</p>
         </div>
-        <Button variant="glass" onClick={openCreate}>
+        <Button variant="secondary" onClick={openCreate}>
           <Plus size={16} /> Ajouter
         </Button>
       </div>
@@ -145,7 +145,7 @@ export function AddressesPage() {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.2rem' }}>
           {addresses.map((address) => (
-            <GlassCard key={address.uuid} style={{ padding: '1.3rem 1.5rem' }}>
+            <Card key={address.uuid} style={{ padding: '1.3rem 1.5rem' }}>
               <div className="flex-between" style={{ alignItems: 'flex-start', gap: '1rem' }}>
                 <div>
                   <p className="fw-bold">{address.name}</p>
@@ -159,11 +159,11 @@ export function AddressesPage() {
                     <Pencil size={15} />
                   </Button>
                   <Button variant="ghost" size="sm" onClick={() => setDeleting(address)} aria-label={`Supprimer ${address.name}`}>
-                    <Trash2 size={15} style={{ color: '#be123c' }} />
+                    <Trash2 size={15} style={{ color: 'var(--color-danger)' }} />
                   </Button>
                 </div>
               </div>
-            </GlassCard>
+            </Card>
           ))}
         </div>
       )}

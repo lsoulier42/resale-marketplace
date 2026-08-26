@@ -8,10 +8,16 @@ interface ItemGridProps {
   items: ItemCardData[];
   loading: boolean;
   emptyTitle?: string;
+  emptyDescription?: string;
 }
 
 /** Grille responsive de cartes articles (avec squelettes et état vide). */
-export function ItemGrid({ items, loading, emptyTitle = 'Aucun article' }: ItemGridProps) {
+export function ItemGrid({
+  items,
+  loading,
+  emptyTitle = 'Aucun article',
+  emptyDescription = 'La boutique se remplit — revenez bientôt !',
+}: ItemGridProps) {
   if (loading) {
     return <SkeletonGrid count={6} />;
   }
@@ -20,7 +26,7 @@ export function ItemGrid({ items, loading, emptyTitle = 'Aucun article' }: ItemG
       <EmptyState
         icon={<ShoppingBag size={28} />}
         title={emptyTitle}
-        description="La boutique se remplit — revenez bientôt !"
+        description={emptyDescription}
       />
     );
   }

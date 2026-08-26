@@ -4,8 +4,8 @@ interface SkeletonProps {
   borderRadius?: string | number;
 }
 
-/** Placeholder de chargement avec effet de brillance. */
-export function Skeleton({ width = '100%', height = 16, borderRadius = 12 }: SkeletonProps) {
+/** Placeholder de chargement gris neutre. */
+export function Skeleton({ width = '100%', height = 16, borderRadius = 8 }: SkeletonProps) {
   return (
     <div
       className="skeleton"
@@ -19,19 +19,12 @@ export function Skeleton({ width = '100%', height = 16, borderRadius = 12 }: Ske
 /** Grille de squelettes (ex. cartes d'articles en chargement). */
 export function SkeletonGrid({ count = 6 }: { count?: number }) {
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-        gap: '1.2rem',
-      }}
-      aria-hidden="true"
-    >
+    <div className="item-grid" aria-hidden="true">
       {Array.from({ length: count }, (_, index) => (
-        <div key={index} className="glass-card" style={{ padding: '1.2rem' }}>
-          <Skeleton height={150} borderRadius={14} />
-          <Skeleton height={18} width="70%" borderRadius={10} />
-          <Skeleton height={18} width="45%" borderRadius={10} />
+        <div key={index} className="skeleton-card">
+          <Skeleton height={240} borderRadius={8} />
+          <Skeleton height={14} width="75%" borderRadius={6} />
+          <Skeleton height={16} width="45%" borderRadius={6} />
         </div>
       ))}
     </div>

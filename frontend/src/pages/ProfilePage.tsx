@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { CreditCard, Store, UserCircle } from 'lucide-react';
-import { GlassCard } from '../components/ui/GlassCard';
+import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Field } from '../components/ui/Field';
 import { Skeleton } from '../components/ui/Skeleton';
@@ -67,7 +67,7 @@ export function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="glass-card" style={{ padding: '1.6rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div className="card" style={{ padding: '1.6rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Skeleton height={26} width={200} />
         <Skeleton height={16} width="70%" />
       </div>
@@ -76,22 +76,22 @@ export function ProfilePage() {
 
   if (isError) {
     return (
-      <GlassCard style={{ padding: '1.5rem', textAlign: 'center' }}>
+      <Card style={{ padding: '1.5rem', textAlign: 'center' }}>
         <p className="text-muted">Impossible de charger votre profil.</p>
-      </GlassCard>
+      </Card>
     );
   }
 
   return (
     <div style={{ maxWidth: 640 }}>
       <h1 className="page-title" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-        <UserCircle size={26} style={{ color: 'var(--mauve-500)' }} /> Mon profil
+        <UserCircle size={26} style={{ color: 'var(--color-accent)' }} /> Mon profil
       </h1>
       <p className="page-subtitle">
         {profile ? 'Vos informations publiques sur la boutique.' : 'Créez votre profil public de vendeur·se.'}
       </p>
 
-      <GlassCard style={{ padding: '1.8rem' }}>
+      <Card style={{ padding: '1.8rem' }}>
         <form onSubmit={handleSubmit}>
           <Field label="Pseudo" htmlFor="profile-name">
             <input
@@ -115,10 +115,10 @@ export function ProfilePage() {
             {updateProfile.isPending ? 'Enregistrement…' : 'Enregistrer'}
           </Button>
         </form>
-      </GlassCard>
+      </Card>
 
       {!isSeller && (
-        <GlassCard
+        <Card
           style={{
             marginTop: '1.2rem',
             padding: '1.6rem',
@@ -130,7 +130,7 @@ export function ProfilePage() {
           }}
         >
           <div style={{ display: 'flex', gap: '0.9rem', alignItems: 'flex-start' }}>
-            <Store size={24} style={{ color: 'var(--mauve-500)', flexShrink: 0, marginTop: '0.15rem' }} />
+            <Store size={24} style={{ color: 'var(--color-accent)', flexShrink: 0, marginTop: '0.15rem' }} />
             <div>
               <h2 style={{ fontSize: '1.05rem', margin: 0 }}>Vendre sur Resale Marketplace</h2>
               <p className="text-muted text-small" style={{ margin: '0.3rem 0 0' }}>
@@ -141,11 +141,11 @@ export function ProfilePage() {
           <Button onClick={handleBecomeSeller} disabled={becomeSeller.isPending}>
             {becomeSeller.isPending ? 'Création…' : 'Devenir vendeur·se'}
           </Button>
-        </GlassCard>
+        </Card>
       )}
 
       {isSeller && (
-        <GlassCard
+        <Card
           style={{
             marginTop: '1.2rem',
             padding: '1.6rem',
@@ -157,7 +157,7 @@ export function ProfilePage() {
           }}
         >
           <div style={{ display: 'flex', gap: '0.9rem', alignItems: 'flex-start' }}>
-            <CreditCard size={24} style={{ color: 'var(--mauve-500)', flexShrink: 0, marginTop: '0.15rem' }} />
+            <CreditCard size={24} style={{ color: 'var(--color-accent)', flexShrink: 0, marginTop: '0.15rem' }} />
             <div>
               <h2 style={{ fontSize: '1.05rem', margin: 0 }}>Recevoir des paiements</h2>
               <p className="text-muted text-small" style={{ margin: '0.3rem 0 0' }}>
@@ -177,7 +177,7 @@ export function ProfilePage() {
                 ? 'Gérer mon compte Stripe'
                 : 'Configurer mes paiements'}
           </Button>
-        </GlassCard>
+        </Card>
       )}
     </div>
   );

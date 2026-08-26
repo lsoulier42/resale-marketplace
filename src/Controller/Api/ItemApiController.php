@@ -34,8 +34,22 @@ class ItemApiController extends ApiController
         $qb = $itemRepository->createQueryBuilder('i')
             ->leftJoin('i.order', 'o')
             ->andWhere('i.availableCount > 0')
-            ->andWhere('o.id IS NULL')
-            ->orderBy('i.createdAt', 'DESC');
+            ->andWhere('o.id IS NULL');
+
+        // Recherche plein texte simple sur le titre.
+        $q = trim((string) $request->query->get('q', ''));
+        if ($q !== '') {
+            $qb->andWhere('LOWER(i.title) LIKE :q')
+                ->setParameter('q', '%' . mb_strtolower($q) . '%');
+        }
+
+        // Tri : récents (défaut), prix croissant ou décroissant.
+        $sort = (string) $request->query->get('sort', 'recent');
+        match ($sort) {
+            'price_asc' => $qb->orderBy('i.price', 'ASC'),
+            'price_desc' => $qb->orderBy('i.price', 'DESC'),
+            default => $qb->orderBy('i.createdAt', 'DESC'),
+        };
 
         $categoryUuid = (string) $request->query->get('category', '');
         if ($categoryUuid !== '') {

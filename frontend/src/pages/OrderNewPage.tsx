@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ShoppingBag } from 'lucide-react';
-import { GlassCard } from '../components/ui/GlassCard';
+import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Field } from '../components/ui/Field';
 import { Skeleton } from '../components/ui/Skeleton';
@@ -49,7 +49,7 @@ export function OrderNewPage() {
 
   if (isLoading) {
     return (
-      <div className="glass-card" style={{ padding: '1.6rem' }}>
+      <div className="card" style={{ padding: '1.6rem' }}>
         <Skeleton height={24} width={220} />
         <Skeleton height={140} borderRadius={16} />
       </div>
@@ -58,12 +58,12 @@ export function OrderNewPage() {
 
   if (isError || !item || item.isSold) {
     return (
-      <GlassCard style={{ padding: '2rem', textAlign: 'center' }}>
+      <Card style={{ padding: '2rem', textAlign: 'center' }}>
         <p className="text-muted">Cet article n'est plus disponible.</p>
-        <Link to="/items" className="btn btn-glass mt-2">
+        <Link to="/items" className="btn btn-secondary mt-2">
           <ArrowLeft size={16} /> Retour aux articles
         </Link>
-      </GlassCard>
+      </Card>
     );
   }
 
@@ -79,8 +79,8 @@ export function OrderNewPage() {
 
       <h1 className="page-title">Passer commande</h1>
 
-      <div className="item-detail">
-        <GlassCard style={{ padding: '1.5rem' }}>
+      <div style={{ maxWidth: 620 }}>
+        <Card style={{ padding: '1.5rem' }}>
           <div className="order-detail-item">
             <ItemImage src={item.medias[0] ?? ''} alt={item.title} className="order-card-image" />
             <div style={{ flex: 1 }}>
@@ -146,7 +146,7 @@ export function OrderNewPage() {
               Le paiement est sécurisé par Stripe.
             </p>
           </form>
-        </GlassCard>
+        </Card>
       </div>
     </div>
   );

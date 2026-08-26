@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import { GlassCard } from '../components/ui/GlassCard';
+import { Card } from '../components/ui/Card';
 
 export function NotFoundPage() {
   return (
-    <GlassCard style={{ padding: '3rem', textAlign: 'center', maxWidth: 520, margin: '4rem auto' }}>
-      <p style={{ fontSize: '3rem', fontWeight: 800, background: 'var(--gradient-brand)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+    <Card style={{ padding: '3rem', textAlign: 'center', maxWidth: 520, margin: '4rem auto' }}>
+      <p style={{ fontSize: '3rem', fontWeight: 800, background: 'var(--color-accent)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
         404
       </p>
       <h1 className="mt-2" style={{ fontSize: '1.3rem' }}>Page introuvable</h1>
@@ -12,6 +12,6 @@ export function NotFoundPage() {
       <Link to="/" className="btn btn-primary mt-3">
         Retour à l'accueil
       </Link>
-    </GlassCard>
+    </Card>
   );
 }

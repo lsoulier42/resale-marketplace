@@ -9,7 +9,7 @@ interface ItemImageProps {
 
 /**
  * Image avec repli élégant : si l'URL est vide ou le chargement échoue,
- * affiche un dégradé rose/mauve avec une icône.
+ * affiche un fond gris neutre avec une icône.
  */
 export function ItemImage({ src, alt, className = '' }: ItemImageProps) {
   const [failed, setFailed] = useState(false);

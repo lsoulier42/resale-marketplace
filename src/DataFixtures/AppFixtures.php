@@ -33,23 +33,26 @@ class AppFixtures extends AbstractFixtures
     ];
 
     /**
-     * @var list<array{email: string, display_name: string, bio: string}>
+     * @var list<array{email: string, display_name: string, bio: string, avatar: string}>
      */
     private const SELLERS = [
         [
             'email' => 'alex@example.test',
             'display_name' => 'Alex',
             'bio' => 'Vendeur régulier, envoi soigné sous 48h.',
+            'avatar' => 'alex',
         ],
         [
             'email' => 'sam@example.test',
             'display_name' => 'Sam',
             'bio' => 'Boutique variée : qualité et bonnes affaires.',
+            'avatar' => 'sam',
         ],
         [
             'email' => 'jordan@example.test',
             'display_name' => 'Jordan',
             'bio' => 'Articles triés avec soin, vente entre particuliers.',
+            'avatar' => 'jordan',
         ],
     ];
 
@@ -60,6 +63,27 @@ class AppFixtures extends AbstractFixtures
         ['email' => 'camille@example.test', 'name' => 'Camille R.', 'city' => 'Lyon', 'zip' => '69003'],
         ['email' => 'julien@example.test', 'name' => 'Julien M.', 'city' => 'Paris', 'zip' => '75011'],
         ['email' => 'sophie@example.test', 'name' => 'Sophie L.', 'city' => 'Marseille', 'zip' => '13006'],
+    ];
+
+    /**
+     * Photos libres (licence Pexels) par article, stockées dans
+     * src/DataFixtures/medias/ (voir CREDITS.md pour les sources).
+     *
+     * @var array<string, list<string>>
+     */
+    private const ITEM_PHOTOS = [
+        'Robe vintage taille 38' => ['robe-vintage-1.jpg', 'robe-vintage-2.jpg'],
+        'Veste en jean légère' => ['veste-jean-1.jpg', 'veste-jean-2.jpg'],
+        'Sac à main en cuir' => ['sac-cuir-1.jpg', 'sac-cuir-2.jpg'],
+        'Lampe design années 50' => ['lampe-1.jpg', 'lampe-2.jpg'],
+        'Chaise scandinave en bois' => ['chaise-1.jpg', 'chaise-2.jpg'],
+        'Casque audio sans fil' => ['casque-1.jpg', 'casque-2.jpg'],
+        'Trottinette électrique' => ['trottinette-1.jpg', 'trottinette-2.jpg'],
+        'Console de jeux rétro' => ['console-1.jpg', 'console-2.jpg'],
+        'Montre connectée' => ['montre-1.jpg', 'montre-2.jpg'],
+        'Tasse céramique artisanale' => ['tasse-1.jpg', 'tasse-2.jpg'],
+        'Recueil de nouvelles SF' => ['livres-sf-1.jpg', 'livres-sf-2.jpg'],
+        'Vinyle jazz des années 60' => ['vinyle-1.jpg', 'vinyle-2.jpg'],
     ];
 
     /**
@@ -192,10 +216,10 @@ class AppFixtures extends AbstractFixtures
     public function load(ObjectManager $manager): void
     {
         $this->loadAdmin($manager);
-        $sellers = $this->loadSellers($manager);
+        $medias = $this->loadMedias($manager);
+        $sellers = $this->loadSellers($manager, $medias);
         $customers = $this->loadCustomers($manager);
         $categories = $this->loadCategories($manager);
-        $medias = $this->loadMedias($manager);
         $items = $this->loadItems($manager, $sellers, $categories, $medias);
         $this->loadOrdersAndReviews($manager, $customers, $items);
 
@@ -213,9 +237,10 @@ class AppFixtures extends AbstractFixtures
     }
 
     /**
+     * @param array<string, Media> $medias
      * @return list<Seller>
      */
-    private function loadSellers(ObjectManager $manager): array
+    private function loadSellers(ObjectManager $manager, array $medias): array
     {
         $sellers = [];
         foreach (self::SELLERS as $data) {
@@ -228,7 +253,8 @@ class AppFixtures extends AbstractFixtures
             $profile = new Profile();
             $profile->setUser($user)
                 ->setDisplayName($data['display_name'])
-                ->setBio($data['bio']);
+                ->setBio($data['bio'])
+                ->setAvatar($medias[sprintf('avatar-%s.jpg', $data['avatar'])] ?? null);
 
             $seller = new Seller();
             $seller->setUser($user);
@@ -292,40 +318,31 @@ class AppFixtures extends AbstractFixtures
     }
 
     /**
-     * Génère des visuels SVG d'exemple dans public/uploads (non versionnés).
+     * Copie les photos libres versionnées (src/DataFixtures/medias) vers
+     * public/uploads (non versionné) et les enregistre en base.
      *
-     * @return list<Media>
+     * @return array<string, Media> fichier => Media
      */
     private function loadMedias(ObjectManager $manager): array
     {
-        $colors = ['#6b2d5c', '#222222', '#8b0000', '#2e4a62', '#4b5320', '#3c3c3c'];
-        $labels = ['Mode', 'Chaussures', 'Maison', 'High-tech', 'Loisirs', 'Livres'];
-        $medias = [];
+        $sourceDir = dirname(__DIR__, 2) . '/src/DataFixtures/medias';
         $uploadDir = dirname(__DIR__, 2) . '/public/uploads';
 
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0775, true);
         }
 
-        foreach ($labels as $index => $label) {
-            $filename = sprintf('demo-%d.svg', $index + 1);
-            $svg = sprintf(
-                '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500">'
-                . '<rect width="400" height="500" fill="%s"/>'
-                . '<text x="200" y="250" font-size="28" fill="#ffffff" text-anchor="middle" '
-                . 'font-family="Arial">%s</text>'
-                . '</svg>',
-                $colors[$index],
-                $label
-            );
-            file_put_contents($uploadDir . '/' . $filename, $svg);
+        $medias = [];
+        foreach (glob($sourceDir . '/*.jpg') ?: [] as $source) {
+            $filename = basename($source);
+            copy($source, $uploadDir . '/' . $filename);
 
             $media = new Media();
             $media->setFile($filename)
-                ->setFileSize(strlen($svg))
-                ->setFileType('image/svg+xml');
+                ->setFileSize((int) filesize($uploadDir . '/' . $filename))
+                ->setFileType('image/jpeg');
             $manager->persist($media);
-            $medias[] = $media;
+            $medias[$filename] = $media;
         }
 
         return $medias;
@@ -334,13 +351,13 @@ class AppFixtures extends AbstractFixtures
     /**
      * @param list<Seller> $sellers
      * @param array<string, Category> $categories
-     * @param list<Media> $medias
+     * @param array<string, Media> $medias
      * @return list<Item>
      */
     private function loadItems(ObjectManager $manager, array $sellers, array $categories, array $medias): array
     {
         $items = [];
-        foreach (self::ITEMS as $index => $data) {
+        foreach (self::ITEMS as $data) {
             $item = new Item();
             $item->setTitle($data['title'])
                 ->setDescription($this->faker->sentence(10))
@@ -349,13 +366,11 @@ class AppFixtures extends AbstractFixtures
                 ->setCategory($categories[$data['category']])
                 ->setSeller($sellers[$data['seller']]);
 
-            // Une à deux photos d'exemple par article.
-            $mediasForItem = [$medias[$index % count($medias)]];
-            if ($index % 3 === 0) {
-                $mediasForItem[] = $medias[($index + 2) % count($medias)];
-            }
-            foreach ($mediasForItem as $media) {
-                $item->addMedia($media);
+            // Deux photos libres correspondant à l'article.
+            foreach (self::ITEM_PHOTOS[$data['title']] as $photo) {
+                if (isset($medias[$photo])) {
+                    $item->addMedia($medias[$photo]);
+                }
             }
 
             $manager->persist($item);
