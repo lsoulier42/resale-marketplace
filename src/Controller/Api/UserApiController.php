@@ -119,8 +119,7 @@ class UserApiController extends ApiController
         Request $request,
         ValidatorInterface $validator,
         bool $isNew
-    ): UserPayload|JsonResponse
-    {
+    ): UserPayload|JsonResponse {
         $data = json_decode((string) $request->getContent(), true);
         $payload = new UserPayload();
         $payload->email = (string) ($data['email'] ?? '');
@@ -143,7 +142,11 @@ class UserApiController extends ApiController
 
         $violations = $validator->validate($payload);
         if (count($violations) > 0) {
-            return $this->jsonError('Données invalides.', Response::HTTP_UNPROCESSABLE_ENTITY, $this->violationList($violations));
+            return $this->jsonError(
+                'Données invalides.',
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                $this->violationList($violations)
+            );
         }
 
         return $payload;
